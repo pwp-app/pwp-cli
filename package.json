@@ -7,8 +7,14 @@
     "pwp": "./index.js"
   },
   "keywords": [
-    "deploy"
+    "deployment",
+    "cli",
+    "tools"
   ],
+  "repository": {
+		"type": "git",
+		"url": "https://github.com/pwp-app/pwp-cli.git"
+	},
   "author": "BackRunner",
   "license": "MIT",
   "dependencies": {
