@@ -68,7 +68,7 @@ class Deployer {
                 },
             ]);
             this.config = fields;
-            fs.writeFileSync('pwp-deploy.json', JSON.stringify(fields));
+            fs.writeFileSync('pwp-deploy.json', JSON.stringify(fields, null, 2));
             // detect .gitignore
             if (fs.statSync('.gitignore')) {
                 fs.appendFileSync('.gitignore', '\r\npwp-deploy.json');
