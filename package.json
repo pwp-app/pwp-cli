@@ -1,6 +1,6 @@
 {
   "name": "pwp-cli",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Useful cli tools created by pwp.app",
   "main": "index.js",
   "bin": {
