@@ -12,7 +12,7 @@ program.command('deploy')
         deployer.run();
     });
 
-program.command('deploy-init')
+program.command('deploy init')
     .description('Init config file for deployment.')
     .action(() => {
         deployer.create_config('directly');
