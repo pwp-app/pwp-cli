@@ -11,9 +11,11 @@ const Client = require('ssh2-sftp-client');
 const sftp = new Client();
 
 class Deployer {
-    run() {
-        this.check_config();
-        this.read_config();
+    run(skip = false) {
+        if (!skip) {
+            this.check_config();
+            this.read_config();
+        }
         this.validate_config(this.config);
         this.check_path();
         this.upload();
@@ -23,48 +25,69 @@ class Deployer {
         logger.info('Checking config file...');
         if (!fs.existsSync('pwp-deploy.json')) {
             logger.error('Cannot find pwp-deploy.json in current path.');
-            inquirer.prompt([{
-                type: 'confirm',
-                name: 'confirm',
-                message: 'Do you wanna create a pwp-deploy config file?',
-                default: true
-            }]).then(answers => {
-                if (answers.confirm) {
-                    logger.info('Now we need some information for deploying.');
-                    inquirer.prompt([{
-                        name: 'host',
-                        message: 'Hostname: ',
-                    }, {
-                        name: 'port',
-                        message: 'Port (22): ',
-                        default: 22,
-                    }, {
-                        name: 'username',
-                        message: 'Login username (root): ',
-                        default: 'root'
-                    }, {
-                        name: 'password',
-                        message: 'Login password: '
-                    }, {
-                        name: 'local_path',
-                        message: 'Local production directory: ',
-                    }, {
-                        name: 'remote_path',
-                        message: 'Remote directory: ',
-                    }]).then(answers => {
-                        this.config = answers;
-                        fs.writeFileSync('pwp-deploy.json', JSON.stringify(answers));
-                        // detect .gitignore
-                        if (fs.statSync('.gitignore')) {
-                            fs.appendFileSync('.gitignore', '\r\npwp-deploy.json');
-                        }
-                        logger.info('Config file created.');
-                    });
-                } else {
-                    process.exit();
-                }
-            });
+            this.create_config('normal_run');
         }
+    }
+    create_config(from) {
+        inquirer.prompt([{
+            type: 'confirm',
+            name: 'confirm',
+            message: 'Do you wanna create a pwp-deploy config file?',
+            default: true
+        }]).then(answers => {
+            if (answers.confirm) {
+                logger.info('Now we need some information for deploying.');
+                inquirer.prompt([{
+                    name: 'host',
+                    message: 'Hostname: ',
+                }, {
+                    name: 'port',
+                    message: 'Port (22): ',
+                    default: 22,
+                }, {
+                    name: 'username',
+                    message: 'Login username (root): ',
+                    default: 'root'
+                }, {
+                    name: 'password',
+                    message: 'Login password: '
+                }, {
+                    name: 'local_path',
+                    message: 'Local production directory: ',
+                }, {
+                    name: 'remote_path',
+                    message: 'Remote directory: ',
+                }]).then(answers => {
+                    this.config = answers;
+                    fs.writeFileSync('pwp-deploy.json', JSON.stringify(answers));
+                    // detect .gitignore
+                    if (fs.statSync('.gitignore')) {
+                        fs.appendFileSync('.gitignore', '\r\npwp-deploy.json');
+                    }
+                    logger.info('Config file created.');
+                    inquirer.prompt([{
+                        type: 'confirm',
+                        name: 'confirm',
+                        message: 'Do you want to deploy your files immediately based on the config file you just created?'
+                    }]).then(answers => {
+                        if (!answers.confirm) {
+                            process.exit();
+                        } else {
+                            switch(from) {
+                                case 'normal_run':
+                                    // do nothing, just let the program go
+                                    break;
+                                case 'directly':
+                                    this.run(true);
+                                    break;
+                            }
+                        }
+                    });
+                });
+            } else {
+                process.exit();
+            }
+        });
     }
     read_config() {
         try {
@@ -153,6 +176,10 @@ class Deployer {
                 });
                 return await sftp.uploadDir(config.local_path, config.remote_path);
             })
+            .then(() => {
+                logger.info('Your files are deployed.');
+                sftp.end();
+            })
             .catch((error) => {
                 logger.error('Something went wrong.');
                 logger.error(error);
@@ -160,3 +187,5 @@ class Deployer {
             });
     }
 }
+
+module.exports = Deployer;

@@ -1,10 +1,10 @@
 {
-  "name": "pwp-deploy",
+  "name": "pwp-cli",
   "version": "1.0.0",
-  "description": "Deploy static web files to a SFTP server automatically",
+  "description": "Useful cli tools created by pwp.app",
   "main": "index.js",
   "bin": {
-    "pwp": "./index"
+    "pwp": "./index.js"
   },
   "keywords": [
     "deploy"
