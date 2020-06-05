@@ -1,0 +1,20 @@
+{
+  "name": "pwp-deploy",
+  "version": "1.0.0",
+  "description": "Deploy static web files to a SFTP server automatically",
+  "main": "index.js",
+  "bin": {
+    "pwp": "./index"
+  },
+  "keywords": [
+    "deploy"
+  ],
+  "author": "BackRunner",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^5.1.0",
+    "inquirer": "^7.1.0",
+    "log4js": "^6.3.0",
+    "ssh2-sftp-client": "^5.1.2"
+  }
+}
