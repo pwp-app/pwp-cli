@@ -22,7 +22,7 @@ program
                 deployer.run();
                 break;
             case 'init':
-                deployer.create_config();
+                deployer.create_config('direct');
                 break;
         }
     });

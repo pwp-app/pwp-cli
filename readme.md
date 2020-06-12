@@ -35,3 +35,24 @@ Also, you can run the following line to create a configuration file:
 ```bash
 pwp deploy init
 ```
+
+If you want to run some shell commands before deployment, you can set "shell_before_deploy" manually in your configuration.
+
+Example:
+
+```json
+{
+  "host": "localhost",
+  "port": 22,
+  "username": "root",
+  "password": "",
+  "local_path": "./public",
+  "remote_path": "/data/www",
+  "always_overwrite": true,
+  "shell_before_deploy": [
+    "npm run build",
+  ]
+}
+```
+
+Also, you can set "shell_after_deploy" in the same way.
