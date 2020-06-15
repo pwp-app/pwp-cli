@@ -20,9 +20,13 @@ class Deployer {
         }
         this.validate_config();
         this.check_path();
-        this.run_shell('before');
+        if (this.config.shell_before_deploy) {
+            this.run_shell('before');
+        }
         this.upload();
-        this.run_shell('after');
+        if (this.config.shell_after_deploy) {
+            this.run_shell('after');
+        }
     };
     async check_config() {
         // Check if pwp-deploy.json is existed.
@@ -214,6 +218,8 @@ class Deployer {
                     if (answers.confirm) {
                         // Create a directory
                         return sftp.mkdir(this.config.remote_path, true);
+                    } else {
+                        process.exit();
                     }
                 } else if (res !== 'd') {
                     // Remote path is not a directory, exit
