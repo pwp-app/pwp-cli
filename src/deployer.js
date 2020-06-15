@@ -7,7 +7,7 @@ const inquirer = require('inquirer');
 // chalk
 const chalk = require('chalk');
 // Logger
-const logger = require('./logger');
+const logger = require('./logger')('deployer');
 // SSH
 const Client = require('ssh2-sftp-client');
 const sftp = new Client();
@@ -241,7 +241,7 @@ class Deployer {
                             process.exit();
                         }
                     }
-                    sftp.rmdir(this.config.remote_path, true);
+                    return sftp.rmdir(this.config.remote_path, true);
                 }
             })
             .then(async () => {
@@ -253,7 +253,7 @@ class Deployer {
             })
             .then(() => {
                 logger.info('Your files are deployed.');
-                sftp.end();
+                return sftp.end();
             })
             .catch((error) => {
                 logger.error('Something went wrong.');
