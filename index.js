@@ -1,12 +1,13 @@
 #!/usr/bin/env node
 // init program
-const { program } = require('commander');
+const { program, command } = require('commander');
 const chalk = require('chalk');
 const package = require('./package.json');
 program.version(package.version);
 
 // modules
 const Deployer = require('./src/deployer');
+const Random = require('./src/generator');
 
 // header
 console.log(chalk.blue(`pwp-cli (${package.version})`));
@@ -23,6 +24,16 @@ program
                 break;
             case 'init':
                 deployer.create_config('direct');
+                break;
+        }
+    });
+program.command('generate <operation>')
+    .description('Simply generate things that you will need.')
+    .action((operation) => {
+        const generator = new Generator();
+        switch(operation) {
+            case 'string':
+                generator.getString();
                 break;
         }
     });

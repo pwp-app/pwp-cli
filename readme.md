@@ -5,6 +5,7 @@ pwp-cli is a useful cli tool for frontend developers, it optimized the developme
 ## Now it can do
 
 - Deploy your files over SFTP
+- Generate random string
 
 ## Usage
 
@@ -56,3 +57,13 @@ Example:
 ```
 
 Also, you can set "shell_after_deploy" in the same way.
+
+### Generate
+
+#### String
+
+You can use the following line to generate a random string during your development.
+
+```
+pwp generate string
+```
