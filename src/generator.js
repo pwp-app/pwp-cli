@@ -31,7 +31,7 @@ class Generator {
         });
         console.log(chalk.green('Here is your string: '))
         console.log(chalk.green(res));
-    }-
+    }
 }
 
 module.exports = Generator;

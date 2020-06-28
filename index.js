@@ -7,7 +7,7 @@ program.version(package.version);
 
 // modules
 const Deployer = require('./src/deployer');
-const Random = require('./src/generator');
+const Generator = require('./src/generator');
 
 // header
 console.log(chalk.blue(`pwp-cli (${package.version})`));
