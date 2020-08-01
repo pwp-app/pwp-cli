@@ -183,7 +183,7 @@ class Deployer {
             }
         } else if (type === 'after') {
             if (this.config.shell_after_deploy && Array.isArray(this.config.shell_after_deploy)) {
-                for (let cmd of this.config.shell_before_deploy) {
+                for (let cmd of this.config.shell_after_deploy) {
                     logger.info(`Start to run shell [${cmd}]...`);
                     shell.exec(cmd);
                 }
