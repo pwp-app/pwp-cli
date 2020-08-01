@@ -58,6 +58,21 @@ Example:
 
 Also, you can set "shell_after_deploy" in the same way.
 
+If you want to deploy your files to some different environments, you can set your config file like this:
+
+```json
+{
+  "test": {
+    "host": "",
+    ...
+  },
+  "release": {
+    "host": "",
+    ...
+  }
+}
+```
+
 ### Generate
 
 #### String

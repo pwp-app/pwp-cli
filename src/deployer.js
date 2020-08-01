@@ -13,6 +13,9 @@ const Client = require('ssh2-sftp-client');
 const sftp = new Client();
 
 class Deployer {
+    constructor(env) {
+        this.env = env;
+    }
     async run(skip = false) {
         if (!skip) {
             await this.check_config();
@@ -138,7 +141,16 @@ class Deployer {
     };
     read_config() {
         try {
-            this.config = JSON.parse(fs.readFileSync('pwp-deploy.json'));
+            const config = JSON.parse(fs.readFileSync('pwp-deploy.json'));
+            if (!this.env) {
+                this.config = config;
+            } else {
+                if (!config[this.env]) {
+                    logger.error(`Cannot find the config for env [${this.env}]`);
+                    process.exit();
+                }
+                this.config = config[this.env];
+            }
         } catch (err) {
             logger.error('Cannot read config file.');
             process.exit();
